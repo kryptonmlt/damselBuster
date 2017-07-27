@@ -1,0 +1,64 @@
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>IGT Game Search Scraper</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script type="text/javascript">
+
+            var gamesUrl = "http://localhost:8901/games/";
+
+            //Populates the gamesTable by retreiving the games in DB from the GamesController
+            $(document).ready(function () {
+                $.get(gamesUrl, function (data) {
+                    $('#gamesTable').find('tbody').empty();
+                    for (game in data) {
+                        $('#gamesTable').find('tbody').append('<tr><td><a href="http://localhost:8901/games/' + data[game].id + '/getImage">' + data[game].name + '</a></td>'
+                                + '<td>' + data[game].description + '</td>' + '<td>' + data[game].platform.name + '</td>'
+                                + '<td>' + data[game].imagePath + '</td>' + '<td>' + data[game].reel + '</td>'
+                                + '<td>' + data[game].line + '</td>' + '<td>' + data[game].way + '</td>'
+                                + '<td>' + data[game].credit + '</td>' + '</tr>'
+                                );
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div class="jumbotron">
+                <h1>IGT Games</h1>
+                <p>All Games listed here:</p>
+            </div>
+            <div class="row">
+                <table id="gamesTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th> 
+                            <th>Platform</th>
+                            <th>Image</th>
+                            <th>Reel</th>
+                            <th>Line</th>
+                            <th>Way</th>
+                            <th>Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <footer>
+                Page Maintained by: Kurt Portelli - Contact: <a href="mailto:kurtportelli@gmail.com">kurtportelli@gmail.com</a>
+            </footer>
+
+        </div>
+    </body>
+
+</html>
