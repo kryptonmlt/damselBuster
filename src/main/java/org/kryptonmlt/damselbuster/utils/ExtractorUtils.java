@@ -32,7 +32,10 @@ public class ExtractorUtils {
                 if (value.length > 1) {
                     if (type.equals(value[1])) {
                         try {
-                            result = Integer.parseInt(value[0].replaceAll("[^\\d.]", ""));
+                            String temp = value[0].replaceAll("[^\\d.]", "");
+                            if (!temp.isEmpty()) {
+                                result = Integer.parseInt(temp);
+                            }
                         } catch (Exception e) {
                             LOGGER.error("Invalid number", e);
                         }

@@ -43,8 +43,14 @@ public class IGTGameSearch {
 
     private WebDriver driver;
 
+    private final int GAMES_PER_PAGE = 25;
+
     public IGTGameSearch() {
     }
+
+    private int pastIter = 1;
+    private int pastCounter = 0;
+    private int platformsReady = 0;
 
     /**
      * Sets the driver page to All Games
@@ -60,12 +66,20 @@ public class IGTGameSearch {
      * Also saves them in DB
      */
     public void scrapeAllGames() {
-        driver = new ChromeDriver();
-        driver.get("https://www.igt.com/en/products-and-services/gaming/game-search");
-        getAllGames();
-        //Close the browser
-        driver.quit();
-        driver = null;
+        try {
+            driver = new ChromeDriver();
+            driver.get("https://www.igt.com/en/products-and-services/gaming/game-search");
+            getAllGames();
+            //Close the browser
+            driver.quit();
+            driver = null;
+
+        } catch (Exception e) {
+            //Attempt at restarting the scraper from where it left off
+            LOGGER.error("Error trying to get games for platform", e);
+            driver.quit();
+            scrapeAllGames();
+        }
     }
 
     /**
@@ -88,11 +102,14 @@ public class IGTGameSearch {
         setToAllGames();
         Select select = getPlatformSelect();
         List<String> platforms = getSelectOptions(select);
-        for (String platform : platforms) {
-            LOGGER.debug("Retrieving Games for platform: {}", platform);
-            select = getPlatformSelect();
-            changePageToPlatform(select, platform);
-            getAllGamesInPlatform(platform);
+        for (int i = 0; i < platforms.size(); i++) {
+            if (platformsReady == i) {
+                LOGGER.debug("Retrieving Games for platform: {}", platforms.get(i));
+                select = getPlatformSelect();
+                changePageToPlatform(select, platforms.get(i));
+                getAllGamesInPlatform(platforms.get(i));
+                platformsReady++;
+            }
         }
     }
 
@@ -104,19 +121,36 @@ public class IGTGameSearch {
      */
     private void getAllGamesInPlatform(String platform) {
         int iter = 1;
-        do {
-            WebElement catalog = driver.findElement(By.className("games_list"));
-            List<WebElement> items = catalog.findElements(By.cssSelector(".three.columns"));
-            LOGGER.debug("Page: {}, items: {}", iter, items.size());
-            for (WebElement item : items) {
-                WebElement img = item.findElement(By.tagName("img"));
-                String imageUrl = img.getAttribute("src");
-                String title = item.findElement(By.className("game-title")).getText();
-                String data = item.findElement(By.className("game-data")).getText();
-                saveGame(title, data, imageUrl, platform);
-            }
-            iter++;
-        } while (nextContentPage());
+        int counter = 0;
+        try {
+            do {
+                if (iter >= pastIter) {
+                    WebElement catalog = driver.findElement(By.className("games_list"));
+                    List<WebElement> items = catalog.findElements(By.cssSelector(".three.columns"));
+                    LOGGER.debug("Page: {}, items: {}", iter, items.size());
+                    for (int i = 0; i < items.size(); i++) {
+                        if (counter > pastCounter) {
+                            WebElement img = items.get(i).findElement(By.tagName("img"));
+                            String imageUrl = img.getAttribute("src");
+                            String title = items.get(i).findElement(By.className("game-title")).getText();
+                            String data = items.get(i).findElement(By.className("game-data")).getText();
+                            saveGame(title, data, imageUrl, platform);
+                        }
+                        counter++;
+                    }
+                } else {
+                    counter += GAMES_PER_PAGE;
+                }
+                iter++;
+            } while (nextContentPage());
+            pastIter = 1;
+            pastCounter = 0;
+        } catch (Exception e) {
+            //save counters and throw exception again
+            pastIter = iter;
+            pastCounter = counter;
+            throw e;
+        }
     }
 
     /**

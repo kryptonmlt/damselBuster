@@ -47,7 +47,6 @@ public class DamselRunner implements org.springframework.boot.CommandLineRunner 
     public void run(String... strings) throws Exception {
         System.setProperty("webdriver.chrome.driver", chromeDriver);
         LOGGER.info("Starting Damsel Buster");
-        LOGGER.info(startType);
         switch (startType) {
             case "init":
                 LOGGER.info("Deleting all database entries");

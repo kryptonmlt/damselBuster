@@ -19,10 +19,8 @@
                     for (game in data) {
                         $('#gamesTable').find('tbody').append('<tr><td><a href="http://localhost:8901/games/' + data[game].id + '/getImage">' + data[game].name + '</a></td>'
                                 + '<td>' + data[game].description + '</td>' + '<td>' + data[game].platform.name + '</td>'
-                                + '<td>' + data[game].imagePath + '</td>' + '<td>' + data[game].reel + '</td>'
-                                + '<td>' + data[game].line + '</td>' + '<td>' + data[game].way + '</td>'
-                                + '<td>' + data[game].credit + '</td>' + '</tr>'
-                                );
+                                + '<td>' + data[game].reel + '</td>' + '<td>' + data[game].line + '</td>'
+                                + '<td>' + data[game].way + '</td>' + '<td>' + data[game].credit + '</td>' + '</tr>');
                     }
                 });
             });
@@ -43,7 +41,6 @@
                             <th>Name</th>
                             <th>Description</th> 
                             <th>Platform</th>
-                            <th>Image</th>
                             <th>Reel</th>
                             <th>Line</th>
                             <th>Way</th>
