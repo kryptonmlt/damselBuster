@@ -30,10 +30,21 @@ The app downloads only the newest data at 24hours interval after a 1minute initi
 #### Requirements to build:
 * same as above + maven
 
-#### build command:
+#### Build command:
 * mvn clean install
 * (jar file is generated inside the target folder)
 
+#### Code Structure:
+* org.kryptonmlt.damselbuster: Initialisation class
+	* configuration: Configures rest controllers and public paths
+	* controllers: Expose the database objects via rest
+	* enums: Enums found here
+	* mappers: Maps to database model objects
+	* pojos: Database model objects
+	* repositories: Interact with the database
+	* scraper: Classes which scrape the website
+	* utils: Utility classes
+	
 #### Default Web page to view data:
 * localhost:8901/
 
