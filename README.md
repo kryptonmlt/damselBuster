@@ -59,4 +59,5 @@ Given more time there are more things I could have done example;
 * text analysing the individual Game pages to identify the real/way/line/credit in cases where the data is unstructured.
 * Implement Mocking in testing to mock certain selenium operations. 
 * A more advanced web page which allows you to search and order the items.
-* Easier configuration - Instead of passing the arguments in console as shown above we could use an external config file 
+* Easier configuration - Instead of passing the arguments in console as shown above we could use an external config file
+* Health monitor system such as spring actuator
