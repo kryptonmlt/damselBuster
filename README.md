@@ -7,17 +7,21 @@ All the properties found in application.properties can be configured (even serve
 example;
 * java -jar -DstartType=update -DchromeDriver="path\to\damselBuster\chromedriver.exe" damselbuster-0.0.1-SNAPSHOT.jar
 
-Apart from the correct path to chromedriver, the application has only 1 non-optional parameter to be set:
+Apart from the correct path to chromedriver, the application only has 1 essential parameter to be set:
 * java -jar -DstartType=init damselbuster-0.0.1-SNAPSHOT.jar
 * java -jar -DstartType=delete damselbuster-0.0.1-SNAPSHOT.jar
 * java -jar -DstartType=update damselbuster-0.0.1-SNAPSHOT.jar
 
-###### delete: Deletes all data in database and then calls init
-###### init: Scrapes all the games and afterwards it continues to download only the newest games daily.
-###### update: The app downloads only the newest data at 24hours interval after a 1minute initial delay.
+###### delete:
+Deletes all data in database and then calls init
+###### init:
+Scrapes all the games and afterwards it continues to download only the newest games daily.
+###### update:
+The app downloads only the newest data at 24hours interval after a 1minute initial delay.
 
 #### Requirements to run:
 * java 8
+* chrome
 * selenium chromedriver
 * mysql database
 * run damselTableStructureOnly.sql script on database for empty tables
