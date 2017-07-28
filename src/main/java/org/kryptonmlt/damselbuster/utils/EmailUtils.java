@@ -34,6 +34,7 @@ public class EmailUtils {
      * @param titles
      */
     public void sendEmail(List<String> titles) {
+        LOGGER.info("Sending email to {} with {} new game titles", emailTo, titles.size());
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);

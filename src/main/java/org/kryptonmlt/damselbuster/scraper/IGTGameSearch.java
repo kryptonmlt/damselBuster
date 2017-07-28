@@ -51,25 +51,28 @@ public class IGTGameSearch {
     private int pastIter = 1;
     private int pastCounter = 0;
     private int platformsReady = 0;
+    private List<String> addedGames = new ArrayList<>();
 
     /**
      * Sets the driver page to All Games
      */
-    private void setToAllGames() {
+    private void setToAllGames(String page) {
         LOGGER.debug("Setting game search to All Games");
         Select select = new Select(driver.findElement(By.className("ddl_select_by")));
-        changePageToPlatform(select, "All Games");
+        changePageToPlatform(select, page);
     }
 
     /**
      * Scrapes Game Search for all the Games it contains without any breaks.
      * Also saves them in DB
+     *
+     * @param page page to scrape
      */
-    public void scrapeAllGames() {
+    public void scrapeAllGames(String page) {
         try {
             driver = new ChromeDriver();
             driver.get("https://www.igt.com/en/products-and-services/gaming/game-search");
-            getAllGames();
+            getAllGames(page);
             //Close the browser
             driver.quit();
             driver = null;
@@ -78,7 +81,7 @@ public class IGTGameSearch {
             //Attempt at restarting the scraper from where it left off
             LOGGER.error("Error trying to get games for platform", e);
             driver.quit();
-            scrapeAllGames();
+            scrapeAllGames(page);
         }
     }
 
@@ -88,8 +91,8 @@ public class IGTGameSearch {
      * @return new game titles only
      */
     public List<String> scrapeNewGames() {
-        List<String> addedGames = new ArrayList<>();
-
+        addedGames = new ArrayList<>();
+        scrapeAllGames("Newest Games");
         return addedGames;
     }
 
@@ -98,8 +101,8 @@ public class IGTGameSearch {
      *
      * @param driver
      */
-    private void getAllGames() {
-        setToAllGames();
+    private void getAllGames(String page) {
+        setToAllGames(page);
         Select select = getPlatformSelect();
         List<String> platforms = getSelectOptions(select);
         for (int i = 0; i < platforms.size(); i++) {
@@ -134,7 +137,9 @@ public class IGTGameSearch {
                             String imageUrl = img.getAttribute("src");
                             String title = items.get(i).findElement(By.className("game-title")).getText();
                             String data = items.get(i).findElement(By.className("game-data")).getText();
-                            saveGame(title, data, imageUrl, platform);
+                            if (saveGame(title, data, imageUrl, platform)) {
+                                addedGames.add(title);
+                            }
                         }
                         counter++;
                     }
@@ -161,22 +166,28 @@ public class IGTGameSearch {
      * @param imageUrl
      * @param platform
      */
-    private void saveGame(String name, String description, String imageUrl, String platform) {
+    private boolean saveGame(String name, String description, String imageUrl, String platform) {
         LOGGER.info(name + ", " + description + ", " + imageUrl);
         platform = ExtractorUtils.stripWord(platform, "(");
-        Platform plat = platformRepository.findByName(platform);
-        if (plat == null) {
-            Platform temp = new Platform();
-            temp.setName(platform);
-            platformRepository.save(temp);
-            plat = platformRepository.findByName(platform);
+        Game check = gameRepository.findByNameAndDescription(name, description);
+        if (check == null) {
+            LOGGER.info("new game found!");
+            Platform plat = platformRepository.findByName(platform);
+            if (plat == null) {
+                Platform temp = new Platform();
+                temp.setName(platform);
+                platformRepository.save(temp);
+                plat = platformRepository.findByName(platform);
+            }
+            Image image = ImageUtils.retrieveImage(imageUrl);
+            Game game = GameMapper.createGame(name, description, "", plat);
+            gameRepository.save(game);
+            String path = ImageUtils.saveImage(image, imagesPath, game.getId() + ".png");
+            game.setImagePath(path);
+            gameRepository.save(game);
+            return true;
         }
-        Image image = ImageUtils.retrieveImage(imageUrl);
-        Game game = GameMapper.createGame(name, description, "", plat);
-        gameRepository.save(game);
-        String path = ImageUtils.saveImage(image, imagesPath, game.getId() + ".png");
-        game.setImagePath(path);
-        gameRepository.save(game);
+        return false;
     }
 
     /**

@@ -38,8 +38,13 @@ This is a simple web page to view the data inside the database along with the im
 
 ## Design decisions:
 The application is programmed in java/spring and tried to include a variety of features such as the;
-rest controller to expose the data, JPA repositories to allow for easy interaction with the database,
-entities which are then mapped to the connected database and viceversa, Logging both to file and console, Email, and Unit Tests.
+* rest controller to expose the data
+* JPA repositories to allow for easy interaction with the database
+* entities which are then mapped to the connected database and viceversa
+* cron job scheduling as an annotation
+* Logging both to file and console
+* Email
+* Unit Tests.
  
 Selenium chromedriver was used to scrape the IGT GameSearch website. The website was not straight forward to scrape as it did not offer any web api to extract the game information.
 It also had an inner content page which was being updated with the games information at each click/interaction.
@@ -51,7 +56,7 @@ The application also includes some utility classes for some post/pre processing 
 and String Utilities to extract the reel/way/line/credit information. This was done due to the fact that the website had no clear structure of encoding this.
 Another way would have been to crawl this information through the filters but it would have been much more troublesome as there are multiple games using the same description and name. 
 
-###### [1] - Issue
+###### [1] - Issue: Content Page does not load
 ![alt text](https://raw.githubusercontent.com/kryptonmlt/damselBuster/master/readmeImages/pageNotReturningData.png)
 
 ## Closing Remarks:

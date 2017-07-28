@@ -1,7 +1,5 @@
 package org.kryptonmlt.damselbuster.scraper;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import org.kryptonmlt.damselbuster.utils.EmailUtils;
 import org.slf4j.Logger;
@@ -20,8 +18,6 @@ public class ScheduledTasks {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
     private boolean performUpdates = false;
 
     @Autowired
@@ -34,14 +30,15 @@ public class ScheduledTasks {
      * A cron job which periodically runs at 1am each day to retrieve the newest
      * games
      */
-    //@Scheduled(cron = "0 0 1 * * ?")
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void findNewestGames() {
         if (performUpdates) {
-            LOGGER.info("The time is now {}", dateFormat.format(new Date()));
+            LOGGER.info("Running cronjob: findNewestGames");
             List<String> addedGames = iGTGameSearch.scrapeNewGames();
             if (!addedGames.isEmpty()) {
                 emailUtils.sendEmail(addedGames);
+            } else {
+                LOGGER.info("Running cronjob: No new Games found");
             }
         }
     }

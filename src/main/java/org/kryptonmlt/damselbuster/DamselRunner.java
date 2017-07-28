@@ -53,7 +53,7 @@ public class DamselRunner implements org.springframework.boot.CommandLineRunner 
                 gameRepository.deleteAll();
                 platformRepository.deleteAll();
                 LOGGER.info("Crawling IGT Game Search from scratch");
-                iGTGameSearch.scrapeAllGames();
+                iGTGameSearch.scrapeAllGames("All Games");
                 scheduledTasks.setPerformUpdates(true);
                 break;
             case "update":
