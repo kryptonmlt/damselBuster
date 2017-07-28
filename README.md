@@ -7,7 +7,7 @@ All the properties found in application.properties can be configured (even serve
 example;
 * java -jar damsel-buster-1.0.0-SNAPSHOT.jar -DchromeDriver="/this/file/location.exe" 
 
-The application has only 1 non-optional parameter to be set and the correct path to chromedriver:
+Apart from the correct path to chromedriver, the application has only 1 non-optional parameter to be set:
 * java -jar damsel-buster-1.0.0-SNAPSHOT.jar -DstartType=init
 * java -jar damsel-buster-1.0.0-SNAPSHOT.jar -DstartType=update
 
@@ -55,7 +55,7 @@ Another way would have been to crawl this information through the filters but it
 ![alt text](https://raw.githubusercontent.com/kryptonmlt/damselBuster/master/readmeImages/pageNotReturningData.png)
 
 ## Closing Remarks:
-* Given more time there are more things I could have done example;
+Given more time there are more things I could have done example;
 * text analysing the individual Game pages to identify the real/way/line/credit in cases where the data is unstructured.
 * Implement Mocking in testing to mock certain selenium operations. 
 * A more advanced web page which allows you to search and order the items.
