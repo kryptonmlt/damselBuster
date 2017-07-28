@@ -27,10 +27,10 @@ public class ScheduledTasks {
     private EmailUtils emailUtils;
 
     /**
-     * A cron job which periodically runs at 1am each day to retrieve the newest
+     * A cron job which periodically runs at after 24hrs to retrieve the newest
      * games
      */
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000, initialDelay = 60 * 1000)
     public void findNewestGames() {
         if (performUpdates) {
             LOGGER.info("Running cronjob: findNewestGames");

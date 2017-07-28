@@ -18,10 +18,10 @@ public class GameMapper {
     /**
      * Creates the Game database pojo
      *
-     * @param name
-     * @param description
-     * @param imagePath
-     * @param platform
+     * @param name game title
+     * @param description game description
+     * @param imagePath game image path on disk
+     * @param platform game platform
      * @return game database object
      */
     public static Game createGame(String name, String description, String imagePath, Platform platform) {

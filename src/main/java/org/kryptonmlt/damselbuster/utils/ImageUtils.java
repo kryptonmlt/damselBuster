@@ -24,8 +24,8 @@ public class ImageUtils {
     /**
      * Downloads image from given url
      *
-     * @param s
-     * @return
+     * @param s url from where to download the image
+     * @return the actual image
      */
     public static Image retrieveImage(String s) {
         Image image = null;
@@ -41,10 +41,10 @@ public class ImageUtils {
     /**
      * Saves image to file
      *
-     * @param img
-     * @param path
-     * @param name
-     * @return
+     * @param img image to save
+     * @param path path to save it
+     * @param name file name
+     * @return the file path where image is saved
      */
     public static String saveImage(Image img, String path, String name) {
         try {
@@ -71,8 +71,8 @@ public class ImageUtils {
     /**
      * Reads Image from file
      *
-     * @param filename
-     * @return
+     * @param filename filename to read
+     * @return Image read
      */
     public static Image readImage(String filename) {
         try {

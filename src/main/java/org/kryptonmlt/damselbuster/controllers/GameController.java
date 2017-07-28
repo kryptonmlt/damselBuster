@@ -37,8 +37,8 @@ public class GameController {
 
     /**
      * Retrieves 1 game
-     * @param gameId
-     * @return game
+     * @param gameId game id
+     * @return game pojo from db
      */
     @RequestMapping(value = "/{gameId}", method = RequestMethod.GET, headers = "Accept=application/json")
     public Game getGame(@PathVariable long gameId) {
@@ -47,9 +47,9 @@ public class GameController {
 
     /**
      * Retrieves image of gameId
-     * @param gameId
-     * @param response
-     * @throws Exception 
+     * @param gameId game id
+     * @param response the image
+     * @throws Exception  when image cannot be retrieved
      */
     @RequestMapping(value = "/{gameId}/getImage", method = RequestMethod.GET)
     public void getImage(@PathVariable long gameId, HttpServletResponse response) throws Exception {

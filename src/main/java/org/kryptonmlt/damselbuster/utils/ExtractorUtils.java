@@ -19,8 +19,8 @@ public class ExtractorUtils {
      * Searches for the type in text and returns its value Example 100-Reel
      * converted to 100
      *
-     * @param text
-     * @param type
+     * @param text the text phrase
+     * @param type the text to search for
      * @return type value if found, otherwise -1
      */
     public static int getValue(String type, String text) {
@@ -50,8 +50,8 @@ public class ExtractorUtils {
     /**
      * Removes trailing characters from text
      *
-     * @param text
-     * @param w
+     * @param text all the text phrase
+     * @param trailing the text to search for
      * @return Example Advantage (100) can be converted to Advantage
      */
     public static String stripWord(String text, String trailing) {

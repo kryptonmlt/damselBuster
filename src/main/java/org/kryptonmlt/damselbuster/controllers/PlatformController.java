@@ -24,7 +24,7 @@ public class PlatformController {
     /**
      * Retrieves all platforms
      *
-     * @return platforms
+     * @return platforms all the platforms
      */
     @RequestMapping(value = "/", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<Platform> getPlatforms() {
@@ -34,12 +34,12 @@ public class PlatformController {
     /**
      * Retrieves 1 platform
      *
-     * @param gameId
-     * @return
+     * @param platformId platform id
+     * @return the corresponding platform
      */
-    @RequestMapping(value = "/{gameId}", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Platform getPlatform(@PathVariable long gameId) {
-        return platformRepository.findOne(gameId);
+    @RequestMapping(value = "/{platformId}", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Platform getPlatform(@PathVariable long platformId) {
+        return platformRepository.findOne(platformId);
     }
 
 }

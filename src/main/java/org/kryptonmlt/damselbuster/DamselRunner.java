@@ -40,18 +40,19 @@ public class DamselRunner implements org.springframework.boot.CommandLineRunner 
     /**
      * Starts the Game Search Scraper
      *
-     * @param strings
-     * @throws Exception
+     * @param strings no arguments used
+     * @throws Exception all exceptions should be caught
      */
     @Override
     public void run(String... strings) throws Exception {
         System.setProperty("webdriver.chrome.driver", chromeDriver);
         LOGGER.info("Starting Damsel Buster");
         switch (startType) {
-            case "init":
+            case "delete":
                 LOGGER.info("Deleting all database entries");
                 gameRepository.deleteAll();
                 platformRepository.deleteAll();
+            case "init":
                 LOGGER.info("Crawling IGT Game Search from scratch");
                 iGTGameSearch.scrapeAllGames("All Games");
                 scheduledTasks.setPerformUpdates(true);

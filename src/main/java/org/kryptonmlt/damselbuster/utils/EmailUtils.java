@@ -31,7 +31,7 @@ public class EmailUtils {
      * Sends email with included game titles/names to recipient defined in
      * emailTo JVM argument
      *
-     * @param titles
+     * @param titles game titles to send
      */
     public void sendEmail(List<String> titles) {
         LOGGER.info("Sending email to {} with {} new game titles", emailTo, titles.size());

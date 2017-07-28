@@ -2,26 +2,33 @@
 Scrapes the IGT Game Search to download games list and info from Url: https://www.igt.com/en/products-and-services/gaming/game-search
 
 ## Execution description:
-The executable jar file is located in the DIST folder, along with the batch file for easy execution.
-All the properties found in application.properties can be configured (even server port etc) through the command line,
+The executable jar file is located in the DIST folder, along with the "run.bat" batch file for easy execution.
+All the properties found in application.properties can be configured (even server port, email settings, logging, etc) through the command line,
 example;
-* java -jar damsel-buster-1.0.0-SNAPSHOT.jar -DchromeDriver="/this/file/location.exe" 
+* java -jar -DstartType=update -DchromeDriver="path\to\damselBuster\chromedriver.exe" damselbuster-0.0.1-SNAPSHOT.jar
 
 Apart from the correct path to chromedriver, the application has only 1 non-optional parameter to be set:
-* java -jar damsel-buster-1.0.0-SNAPSHOT.jar -DstartType=init
-* java -jar damsel-buster-1.0.0-SNAPSHOT.jar -DstartType=update
+* java -jar -DstartType=init damselbuster-0.0.1-SNAPSHOT.jar
+* java -jar -DstartType=delete damselbuster-0.0.1-SNAPSHOT.jar
+* java -jar -DstartType=update damselbuster-0.0.1-SNAPSHOT.jar
 
-###### init: The app deletes everything in the database and scrapes all the website again. After it finishes it continues to download only the newest games daily.
-###### update: The app downloads only the newest data at 1am daily.
+###### delete: Deletes all data in database and then calls init
+###### init: Scrapes all the games and afterwards it continues to download only the newest games daily.
+###### update: The app downloads only the newest data at 24hours interval after a 1minute initial delay.
 
 #### Requirements to run:
 * java 8
 * selenium chromedriver
 * mysql database
-* run damselTableStructureOnly.sql script on database
+* run damselTableStructureOnly.sql script on database for empty tables
+* run damselTableStructureAndDataBackup.sqlscript on database for populated tables with games until 28/7/2017
 
 #### Requirements to build:
 * same as above + maven
+
+#### build command:
+* mvn clean install
+* (jar file is generated inside the target folder)
 
 #### Default Web page to view data:
 * localhost:8901/
@@ -41,7 +48,7 @@ The application is programmed in java/spring and tried to include a variety of f
 * rest controller to expose the data
 * JPA repositories to allow for easy interaction with the database
 * entities which are then mapped to the connected database and viceversa
-* cron job scheduling as an annotation
+* Quartz Scheduling - for job scheduling
 * Logging both to file and console
 * Email
 * Unit Tests.
